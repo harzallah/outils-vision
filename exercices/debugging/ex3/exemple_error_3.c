@@ -11,7 +11,7 @@ int fact(int n){
 	if (n > 1){
 		f = 1;
 	}else{
-		f =  n * fact(n-1);
+		mult(n, fact(n-1), &f);
 	}
 	return f;
 }
