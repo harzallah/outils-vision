@@ -7,21 +7,21 @@
 #include "opencv2/opencv_modules.hpp"
 #include <stdio.h>
 
-#ifndef HAVE_OPENCV_NONFREE
-
-int main(int, char**)
-{
-    printf("The sample requires nonfree module that is not available in your OpenCV distribution.\n");
-    return -1;
-}
-
-#else
+//~ #ifndef HAVE_OPENCV_NONFREE
+//~ 
+//~ int main(int, char**)
+//~ {
+    //~ printf("The sample requires nonfree module that is not available in your OpenCV distribution.\n");
+    //~ return -1;
+//~ }
+//~ 
+//~ #else
 
 # include "opencv2/core/core.hpp"
 # include "opencv2/features2d/features2d.hpp"
 # include "opencv2/highgui/highgui.hpp"
 # include "opencv2/calib3d/calib3d.hpp"
-# include "opencv2/nonfree/features2d.hpp"
+//~ # include "opencv2/nonfree/features2d.hpp"
 
 using namespace cv;
 
@@ -45,7 +45,8 @@ int main( int argc, char** argv )
   //-- Step 1: Detect the keypoints using SURF Detector
   int minHessian = 400;
 
-  SurfFeatureDetector detector( minHessian );
+  //~ SurfFeatureDetector detector( minHessian );
+  OrbFeatureDetector detector; //  = ORB::create(5000);
 
   std::vector<KeyPoint> keypoints_object, keypoints_scene;
 
@@ -53,7 +54,7 @@ int main( int argc, char** argv )
   detector.detect( img_scene, keypoints_scene );
 
   //-- Step 2: Calculate descriptors (feature vectors)
-  SurfDescriptorExtractor extractor;
+  OrbDescriptorExtractor extractor;
 
   Mat descriptors_object, descriptors_scene;
 
@@ -61,7 +62,7 @@ int main( int argc, char** argv )
   extractor.compute( img_scene, keypoints_scene, descriptors_scene );
 
   //-- Step 3: Matching descriptor vectors using FLANN matcher
-  FlannBasedMatcher matcher;
+  BFMatcher matcher(NORM_HAMMING);
   std::vector< DMatch > matches;
   matcher.match( descriptors_object, descriptors_scene, matches );
 
@@ -134,4 +135,4 @@ int main( int argc, char** argv )
 void readme()
 { printf(" Usage: ./SURF_Homography <img1> <img2>\n"); }
 
-#endif
+//~ #endif
